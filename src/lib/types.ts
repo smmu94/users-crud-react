@@ -8,10 +8,8 @@ export type User = {
 
 export type UserListResponse = {
     data: User[];
-    page: number;
-    per_page: number;
-    total: number;
-    total_pages: number;
+    pages: number;
+    items: number;
 };
 
 export type UserResponse = {

@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { API_KEY, API_URL, routes } from "./constants";
+import { API_URL, routes } from "./constants";
 import { UserSchema } from "./schema";
 import { UserState } from "./types";
 
@@ -22,10 +22,7 @@ export async function createUser(prevState: UserState, formData: FormData) {
 
     const res = await fetch(`${API_URL}/users`, {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "x-api-key": API_KEY,
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(validatedFields.data),
     });
 
@@ -34,7 +31,6 @@ export async function createUser(prevState: UserState, formData: FormData) {
     }
 
     revalidatePath(routes.users.list);
-
     return { success: "User created successfully!" };
 }
 
@@ -59,10 +55,7 @@ export async function editUser(
 
     const res = await fetch(`${API_URL}/users/${userId}`, {
         method: "PUT",
-        headers: {
-            "Content-Type": "application/json",
-            "x-api-key": API_KEY,
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(validatedFields.data),
     });
 
@@ -71,6 +64,6 @@ export async function editUser(
     }
 
     revalidatePath(routes.users.detail(+userId));
-
+    revalidatePath(routes.users.list);
     return { success: "User updated successfully!" };
 }

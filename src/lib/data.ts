@@ -1,19 +1,16 @@
-import { API_KEY, API_URL } from "./constants";
-import { Params, UserListResponse, UserResponse } from "./types";
+import { API_URL } from "./constants";
+import { Params, UserListResponse } from "./types";
 
 export const fetchUsers = async (
     params?: Params,
 ): Promise<UserListResponse> => {
     const url = new URL(`${API_URL}/users`);
 
-    if (params?.page) url.searchParams.set("page", String(params.page));
+    if (params?.page) url.searchParams.set("_page", String(params.page));
     if (params?.pageSize)
-        url.searchParams.set("per_page", String(params.pageSize));
+        url.searchParams.set("_limit", String(params.pageSize));
 
-    const res = await fetch(url.toString(), {
-        headers: { "x-api-key": API_KEY },
-        next: { revalidate: 60 },
-    });
+    const res = await fetch(url.toString(), { cache: "no-store" });
 
     if (!res.ok) {
         throw new Error(
@@ -21,14 +18,16 @@ export const fetchUsers = async (
         );
     }
 
-    return res.json();
-};
+    const total = Number(res.headers.get("X-Total-Count") ?? 0);
+    const data = await res.json();
+    const pages = params?.pageSize
+        ? Math.ceil(total / Number(params.pageSize))
+        : 1;
 
-export const fetchUser = async (id: string): Promise<UserResponse> => {
-    const res = await fetch(`${API_URL}/users/${id}`, {
-        headers: { "x-api-key": API_KEY },
-        next: { revalidate: 60 },
-    });
+    return { data, pages, items: total };
+};
+export const fetchUser = async (id: string) => {
+    const res = await fetch(`${API_URL}/users/${id}`, { cache: "no-store" });
 
     if (!res.ok) {
         throw new Error(
@@ -36,5 +35,6 @@ export const fetchUser = async (id: string): Promise<UserResponse> => {
         );
     }
 
-    return res.json();
+    const data = await res.json();
+    return { data };
 };
