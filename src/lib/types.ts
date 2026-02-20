@@ -22,3 +22,14 @@ export type Params = {
     page?: number;
     pageSize?: number;
 };
+
+export type CreateUserState = {
+    errors?: {
+        first_name?: string[];
+        last_name?: string[];
+        email?: string[];
+        avatar?: string[];
+    };
+    success?: string;
+    error?: string;
+};
