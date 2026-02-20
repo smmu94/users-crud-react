@@ -1,5 +1,6 @@
 import { Breadcrumb } from "@/components/shared/breadcrumb";
 import { UserForm } from "@/features/users/components/userForm";
+import { createUser } from "@/lib/actions";
 import { routes } from "@/lib/constants";
 
 export const metadata = { title: "Create User" };
@@ -11,7 +12,8 @@ export default async function CreateUserPage() {
                 link={{ label: "Users", href: routes.users.list }}
                 page="Create User"
             />
-            <UserForm />
+            <h1 className="text-subheading mb-6">Create User</h1>
+            <UserForm action={createUser} />
         </main>
     );
 }

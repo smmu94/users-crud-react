@@ -3,31 +3,51 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { createUser } from "@/lib/actions";
 import { routes } from "@/lib/constants";
-import { CreateUserState } from "@/lib/types";
+import { UserState, UserResponse } from "@/lib/types";
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect } from "react";
 import { toast } from "sonner";
 
-const initialState: CreateUserState = {};
+interface UserFormProps {
+    defaultValues?: UserResponse["data"];
+    action: (
+        prevState: UserState,
+        formData: FormData,
+    ) => Promise<UserState>;
+    isEdit?: boolean;
+    redirectTo?: string; 
+}
+const initialState: UserState = {};
 
-export function UserForm() {
+export function UserForm({
+    defaultValues,
+    action,
+    isEdit = false,
+    redirectTo = routes.users.list,
+}: UserFormProps) {
     const router = useRouter();
-    const [state, formAction, pending] = useActionState(
-        createUser,
-        initialState,
-    );
+    const [state, formAction, pending] = useActionState(action, initialState);
 
     useEffect(() => {
         if (state.success) {
             toast.success(state.success);
-            router.push(routes.users.list);
+            router.push(redirectTo); 
         }
         if (state.error) {
             toast.error(state.error);
         }
-    }, [router, state]);
+    }, [redirectTo, router, state]);
+
+    const buttonConfig = {
+        edit: { idle: "Update User", pending: "Updating..." },
+        create: { idle: "Create User", pending: "Creating..." },
+    };
+
+    const mode = isEdit ? "edit" : "create";
+    const status = pending ? "pending" : "idle";
+
+    const buttonText = buttonConfig[mode][status];
 
     return (
         <form
@@ -43,6 +63,7 @@ export function UserForm() {
                     name="first_name"
                     placeholder="Insert your first name"
                     className="text-base-regular"
+                    defaultValue={defaultValues?.first_name}
                 />
                 <p className="text-sm-regular text-destructive min-h-5">
                     {state.errors?.first_name?.[0] || "\u00A0"}
@@ -57,6 +78,7 @@ export function UserForm() {
                     name="last_name"
                     placeholder="Insert your last name"
                     className="text-base-regular"
+                    defaultValue={defaultValues?.last_name}
                 />
                 <p className="text-sm-regular text-destructive min-h-5">
                     {state.errors?.last_name?.[0] || "\u00A0"}
@@ -72,6 +94,7 @@ export function UserForm() {
                     type="email"
                     placeholder="youremail@example.com"
                     className="text-base-regular"
+                    defaultValue={defaultValues?.email}
                 />
                 <p className="text-sm-regular text-destructive min-h-5">
                     {state.errors?.email?.[0] || "\u00A0"}
@@ -86,6 +109,7 @@ export function UserForm() {
                     name="avatar"
                     placeholder="https://..."
                     className="text-base-regular"
+                    defaultValue={defaultValues?.avatar}
                 />
                 <p className="text-sm-regular text-destructive min-h-5">
                     {state.errors?.avatar?.[0] || "\u00A0"}
@@ -96,7 +120,7 @@ export function UserForm() {
                 disabled={pending}
                 className="w-full bg-primary text-primary-foreground hover:bg-primary/80"
             >
-                {pending ? "Creating..." : "Create user"}
+                {buttonText}
             </Button>
         </form>
     );
