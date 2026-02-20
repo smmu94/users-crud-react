@@ -27,13 +27,15 @@ export const columns: ColumnDef<User>[] = [
         accessorKey: "avatar",
         header: "Avatar",
         cell: ({ row }) => (
-            <Image
-                src={row.original.avatar}
-                alt={`${row.original.first_name} avatar`}
-                width={40}
-                height={40}
-                className="rounded-full"
-            />
+            <div className="relative w-10 h-10">
+                <Image
+                    src={row.original.avatar}
+                    alt={`${row.original.first_name} avatar`}
+                    fill
+                    className="rounded-full object-cover"
+                    sizes="40px"
+                />
+            </div>
         ),
     },
     {

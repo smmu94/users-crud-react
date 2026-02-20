@@ -1,35 +1,37 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
 import {
-    Card as CardBase,
+    Card,
     CardContent,
     CardFooter,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
 import { routes } from "@/lib/constants";
-import { User } from "@/lib/types";
+import { fetchUser } from "@/lib/data";
 import Image from "next/image";
 import Link from "next/link";
 
-interface CardProps {
-    user: User;
+interface UserCardProps {
+    id: string;
 }
 
-export function UserCard({ user }: CardProps) {
+export async function UserCard({ id }: UserCardProps) {
+    const { data: user } = await fetchUser(id);
+
     return (
-        <CardBase className="relative mx-auto w-full max-w-sm overflow-hidden rounded-lg shadow-lg">
+        <Card className="relative mx-auto w-full max-w-sm overflow-hidden rounded-lg shadow-lg">
             <div className="flex justify-center">
-                <Image
-                    src={user.avatar}
-                    alt={`${user.first_name} ${user.last_name}`}
-                    width={250}
-                    height={250}
-                    className="rounded-full border-4 border-surface object-cover"
-                />
+                <div className="relative w-64 h-64">
+                    <Image
+                        src={user.avatar}
+                        alt={`${user.first_name} ${user.last_name}`}
+                        fill
+                        className="rounded-full object-cover border-4 border-surface"
+                        sizes="256px"
+                    />
+                </div>
             </div>
-            <CardHeader className="text-center mt-2">
+            <CardHeader className="mt-2 text-center">
                 <CardTitle className="text-subheading">
                     {user.first_name} {user.last_name}
                 </CardTitle>
@@ -49,6 +51,6 @@ export function UserCard({ user }: CardProps) {
                     </Button>
                 </Link>
             </CardFooter>
-        </CardBase>
+        </Card>
     );
 }

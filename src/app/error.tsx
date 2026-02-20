@@ -2,15 +2,15 @@
 
 import { UsersHeader } from "@/components/features/usersList/usersHeader";
 import { UsersTable } from "@/components/features/usersList/usersTable";
-import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
 
-interface ErrorPageProps {
-    error: Error & { digest?: string };
+export default function ErrorPage({
+    error,
+    reset,
+}: {
+    error: Error;
     reset: () => void;
-}
-
-export default function ErrorPage({ error, reset }: ErrorPageProps) {
+}) {
     useEffect(() => {
         console.error(error);
     }, [error]);
@@ -18,10 +18,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
     return (
         <main className="container mx-auto flex h-screen flex-col gap-12 py-8">
             <UsersHeader />
-            <UsersTable isError />
-            <Button variant="outline" onClick={reset} className="w-fit">
-                Try again
-            </Button>
+            <UsersTable isError onRetry={() => reset()} />
         </main>
     );
 }

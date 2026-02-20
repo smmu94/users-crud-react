@@ -1,5 +1,6 @@
 "use client";
 
+import { ErrorView } from "@/components/shared/errorView";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
     Table,
@@ -18,7 +19,6 @@ import {
     SortingState,
     useReactTable,
 } from "@tanstack/react-table";
-import { AlertCircle } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { Pagination } from "../pagination";
@@ -29,6 +29,7 @@ interface UsersTableProps {
     data?: User[];
     isLoading?: boolean;
     isError?: boolean;
+    onRetry?: () => void;
     pageCount?: number;
 }
 
@@ -36,6 +37,7 @@ export const UsersTable = ({
     data = [],
     isLoading = false,
     isError = false,
+    onRetry = () => {},
     pageCount = 1,
 }: UsersTableProps) => {
     const router = useRouter();
@@ -89,13 +91,11 @@ export const UsersTable = ({
             return (
                 <TableRow>
                     <TableCell colSpan={columns.length}>
-                        <div className="flex flex-col items-center gap-3 py-8 text-center">
-                            <AlertCircle className="h-8 w-8 text-destructive" />
-                            <p className="text-sm text-muted-foreground">
-                                We couldn&apos;t load the users. Please try
-                                again.
-                            </p>
-                        </div>
+                        <ErrorView
+                            description="We couldn't load the users. Please try
+                                again."
+                            onRetry={onRetry}
+                        />
                     </TableCell>
                 </TableRow>
             );
