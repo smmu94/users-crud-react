@@ -1,6 +1,6 @@
-import { UserCard } from "@/components/features/userDetail/userCard";
-import { UserCardSkeleton } from "@/components/features/userDetail/userCardSkeleton";
 import { Breadcrumb } from "@/components/shared/breadcrumb";
+import { UserCard } from "@/features/users/detail/userCard";
+import { UserCardSkeleton } from "@/features/users/detail/userCardSkeleton";
 import { routes } from "@/lib/constants";
 import { Suspense } from "react";
 

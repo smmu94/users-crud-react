@@ -1,6 +1,6 @@
-import { UsersList } from "@/components/features/usersList";
-import { UsersHeader } from "@/components/features/usersList/usersHeader";
-import { UsersTable } from "@/components/features/usersList/usersTable";
+import { UsersList } from "@/features/users/list";
+import { UsersHeader } from "@/features/users/list/usersHeader";
+import { UsersTable } from "@/features/users/list/usersTable";
 import { Metadata } from "next";
 import { Suspense } from "react";
 

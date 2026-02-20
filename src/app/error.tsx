@@ -1,7 +1,7 @@
 "use client";
 
-import { UsersHeader } from "@/components/features/usersList/usersHeader";
-import { UsersTable } from "@/components/features/usersList/usersTable";
+import { UsersHeader } from "@/features/users/list/usersHeader";
+import { UsersTable } from "@/features/users/list/usersTable";
 import { useEffect } from "react";
 
 export default function ErrorPage({
