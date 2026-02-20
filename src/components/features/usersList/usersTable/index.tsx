@@ -9,6 +9,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
+import { routes } from "@/lib/constants";
 import { User } from "@/lib/types";
 import {
     flexRender,
@@ -67,6 +68,10 @@ export const UsersTable = ({
         router.push(`?${params.toString()}`);
     };
 
+    const handleRowClick = (userId: number) => {
+        router.push(routes.users.detail(userId));
+    };
+
     const renderBody = () => {
         if (isLoading) {
             return Array.from({ length: SKELETON_ROWS }).map((_, rowIndex) => (
@@ -110,7 +115,11 @@ export const UsersTable = ({
         }
 
         return table.getRowModel().rows.map((row) => (
-            <TableRow key={row.id}>
+            <TableRow
+                key={row.id}
+                className="cursor-pointer"
+                onClick={() => handleRowClick(row.original.id)}
+            >
                 {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
                         {flexRender(
