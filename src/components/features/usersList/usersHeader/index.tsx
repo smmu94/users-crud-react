@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export const UsersHeader = () => {
     return (
-        <header className="container mx-auto w-full flex justify-between items-center">
+        <header className="flex justify-between items-center gap-4">
             <div className="flex flex-col gap-2">
                 <h1 className="text-subheading">Users</h1>
                 <h2>Manage your team members here.</h2>

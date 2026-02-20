@@ -6,3 +6,7 @@ export const routes = {
         edit: (id: number) => `/users/${id}/edit`,
     },
 } as const;
+
+export const API_URL = process.env.NEXT_PUBLIC_API_URL;
+export const API_KEY = process.env.NEXT_PUBLIC_API_KEY ?? "";
+
