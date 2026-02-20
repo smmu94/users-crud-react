@@ -23,7 +23,7 @@ export type Params = {
     pageSize?: number;
 };
 
-export type CreateUserState = {
+export type UserState = {
     errors?: {
         first_name?: string[];
         last_name?: string[];
